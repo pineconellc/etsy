@@ -238,6 +238,12 @@ module Etsy
         listing.image.should == 'image_1'
       end
 
+      should "have a shop" do
+        data = read_fixture('listing/getListing.shop.json')
+        listing = Listing.new data.first
+        listing.shop.class.should == Etsy::Shop
+        listing.shop.id.should == 8883597
+      end
     end
 
     context "with favorite listings data" do

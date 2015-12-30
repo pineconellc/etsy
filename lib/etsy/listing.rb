@@ -44,10 +44,11 @@ module Etsy
 
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
-               :featured_rank, :occasion, :num_favorers, :user_id,
+               :featured_rank, :occasion, :num_favorers, :user_id, :shop_id,
                :shipping_template_id, :who_made, :when_made
 
     association :image, :from => 'Images'
+    association :shop, :from => 'Shop'
 
     def self.create(options = {})
       options.merge!(:require_secure => true)
@@ -58,7 +59,7 @@ module Etsy
       options.merge!(:require_secure => true)
       put("/listings/#{listing.id}", options)
     end
-    
+
     def self.destroy(listing, options = {})
       options.merge!(:require_secure => true)
       delete("/listings/#{listing.id}", options)
@@ -119,6 +120,10 @@ module Etsy
     def self.find_all_active_by_category(category, options = {})
       options[:category] = category
       get_all("/listings/active", options)
+    end
+
+    def shop
+      @shop ||= unless associated_shop.nil? then Etsy::Shop.new(associated_shop) end
     end
 
     # The collection of images associated with this listing.
@@ -262,7 +267,7 @@ module Etsy
     end
 
     private
-    
+
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
     end
