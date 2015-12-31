@@ -45,7 +45,8 @@ module Etsy
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id, :shop_id,
-               :shipping_template_id, :who_made, :when_made, :used_manufacturer
+               :shipping_template_id, :who_made, :when_made, :used_manufacturer,
+               :is_digital, :file_data
 
     association :image, :from => 'Images'
     association :shop, :from => 'Shop'
@@ -191,6 +192,10 @@ module Etsy
 
     def used_manufacturer?
       used_manufacturer
+    end
+
+    def digital?
+      is_digital
     end
 
     STATES.each do |method_name|

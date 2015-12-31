@@ -192,6 +192,10 @@ module Etsy
         should "have a value for :used_manufacturer?" do
           @listing.used_manufacturer?.should == false
         end
+
+        should "have a value for :digital?" do
+          @listing.digital? == false
+        end
       end
 
       %w(active removed sold_out expired alchemy).each do |state|
